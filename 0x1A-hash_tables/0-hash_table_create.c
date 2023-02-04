@@ -1,27 +1,27 @@
-#include <stdlib.h>
-#include <string.h>
+#include "hash_tables.h"
 
-typedef struct node {
-  char *key;
-  int value;
-  struct node *next;
-} node_t;
+/**
+ * hash_table_create - Creates a hash table.
+ * @size: The size of the array.
+ *
+ * Return: If an error occurs - NULL.
+ *         Otherwise - a pointer to the new hash table.
+ */
+hash_table_t *hash_table_create(unsigned long int size)
+{
+	hash_table_t *ht;
+	unsigned long int i;
 
-typedef struct hash_table {
-  unsigned long int size;
-  node_t **array;
-} hash_table_t;
+	ht = malloc(sizeof(hash_table_t));
+	if (ht == NULL)
+		return (NULL);
 
-hash_table_t *hash_table_create(unsigned long int size) {
-  hash_table_t *hash_table = malloc(sizeof(hash_table_t));
-  if (!hash_table) return NULL;
+	ht->size = size;
+	ht->array = malloc(sizeof(hash_node_t *) * size);
+	if (ht->array == NULL)
+		return (NULL);
+	for (i = 0; i < size; i++)
+		ht->array[i] = NULL;
 
-  hash_table->size = size;
-  hash_table->array = calloc(size, sizeof(node_t*));
-  if (!hash_table->array) {
-    free(hash_table);
-    return NULL;
-  }
-
-  return hash_table;
+	return (ht);
 }
